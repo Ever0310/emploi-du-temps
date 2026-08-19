@@ -9,6 +9,18 @@ const DAYS = [
   { id: 'friday',    label: 'Ven' },
 ]
 
+const SUBJECTS = [
+  { name: 'Français',       color: '#3B82F6' },
+  { name: 'Mathématiques',  color: '#EF4444' },
+  { name: 'Anglais',        color: '#06B6D4' },
+  { name: 'Sciences',       color: '#10B981' },
+  { name: 'Histoire',       color: '#F97316' },
+  { name: 'EPS',            color: '#22C55E' },
+  { name: 'Géographie',     color: '#8B5CF6' },
+  { name: 'Musique',        color: '#EC4899' },
+  { name: 'EMC',            color: '#F59E0B' },
+]
+
 const PRESET_COLORS = [
   '#3B82F6', '#EF4444', '#22C55E', '#F97316',
   '#A855F7', '#EC4899', '#06B6D4', '#EAB308',
@@ -27,37 +39,45 @@ const DURATIONS = [
   { label: '3h',     value: 180 },
 ]
 
-export default function EditEventModal({ event, defaultDay, defaultStartTime, settings, existingSubjects, onSave, onDelete, onClose }) {
+export default function EditEventModal({ event, defaultDay, defaultStartTime, settings, onSave, onDelete, onClose }) {
   const isEdit = !!event
+
+  const getInitialSubjectMode = () => {
+    if (!event?.subject) return 'list'
+    return SUBJECTS.find(s => s.name === event.subject) ? 'list' : 'custom'
+  }
+
+  const [subjectMode, setSubjectMode] = useState(getInitialSubjectMode)
   const [subject, setSubject] = useState(event?.subject || '')
-  const [color, setColor] = useState(event?.color || PRESET_COLORS[0])
+  const [customSubject, setCustomSubject] = useState(subjectMode === 'custom' ? event?.subject : '')
+  const [color, setColor] = useState(event?.color || SUBJECTS[0].color)
   const [day, setDay] = useState(event?.day || defaultDay || 'monday')
   const [startTime, setStartTime] = useState(event?.startTime || defaultStartTime || settings.startTime)
   const [duration, setDuration] = useState(event?.duration || 60)
-  const [customDuration, setCustomDuration] = useState(false)
+  const [customDuration, setCustomDuration] = useState(!DURATIONS.find(d => d.value === (event?.duration || 60)))
   const [error, setError] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   const endTime = minutesToTime(timeToMinutes(startTime) + duration)
 
-  // Suggest color from existing subject
-  const handleSubjectChange = (value) => {
-    setSubject(value)
-    const existing = existingSubjects.find(s => s.name.toLowerCase() === value.toLowerCase())
-    if (existing) setColor(existing.color)
+  const handleSubjectSelect = (s) => {
+    setSubject(s.name)
+    setColor(s.color)
+    setSubjectMode('list')
   }
 
   const handleSave = () => {
-    if (!subject.trim()) { setError('Le nom de la matière est requis.'); return }
+    const finalSubject = subjectMode === 'custom' ? customSubject.trim() : subject
+    if (!finalSubject) { setError('Sélectionne ou saisis une matière.'); return }
     if (duration <= 0) { setError('La durée doit être supérieure à 0.'); return }
-    onSave({ id: event?.id, subject: subject.trim(), color, day, startTime, duration })
+    onSave({ id: event?.id, subject: finalSubject, color, day, startTime, duration })
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white">
           <h2 className="font-bold text-gray-800 text-lg">
             {isEdit ? 'Modifier le créneau' : 'Nouveau créneau'}
           </h2>
@@ -71,19 +91,53 @@ export default function EditEventModal({ event, defaultDay, defaultStartTime, se
         <div className="px-6 py-4 space-y-5">
           {/* Subject */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Matière</label>
-            <input
-              type="text"
-              list="subjects-list"
-              value={subject}
-              onChange={e => handleSubjectChange(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400 text-gray-800"
-              placeholder="ex. Mathématiques"
-              autoFocus
-            />
-            <datalist id="subjects-list">
-              {existingSubjects.map(s => <option key={s.name} value={s.name} />)}
-            </datalist>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Matière</label>
+
+            {subjectMode === 'list' ? (
+              <>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {SUBJECTS.map(s => (
+                    <button
+                      key={s.name}
+                      type="button"
+                      onClick={() => handleSubjectSelect(s)}
+                      className={`px-2 py-2 rounded-lg text-xs font-medium text-left transition-all border-2
+                        ${subject === s.name
+                          ? 'border-transparent text-white'
+                          : 'border-gray-200 text-gray-600 hover:border-gray-300 bg-white'}`}
+                      style={subject === s.name ? { backgroundColor: s.color, borderColor: s.color } : {}}
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setSubjectMode('custom'); setSubject('') }}
+                  className="mt-2 text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                >
+                  + Saisir manuellement
+                </button>
+              </>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={customSubject}
+                  onChange={e => setCustomSubject(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400 text-gray-800"
+                  placeholder="Nom de la matière…"
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={() => { setSubjectMode('list'); setCustomSubject('') }}
+                  className="mt-1 text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                >
+                  ← Choisir dans la liste
+                </button>
+              </>
+            )}
           </div>
 
           {/* Color */}
@@ -104,15 +158,13 @@ export default function EditEventModal({ event, defaultDay, defaultStartTime, se
                   }}
                 />
               ))}
-              <div className="relative">
-                <input
-                  type="color"
-                  value={color}
-                  onChange={e => setColor(e.target.value)}
-                  className="w-7 h-7 rounded-full cursor-pointer border-2 border-gray-300 p-0.5"
-                  title="Couleur personnalisée"
-                />
-              </div>
+              <input
+                type="color"
+                value={color}
+                onChange={e => setColor(e.target.value)}
+                className="w-7 h-7 rounded-full cursor-pointer border-2 border-gray-300 p-0.5"
+                title="Couleur personnalisée"
+              />
             </div>
           </div>
 

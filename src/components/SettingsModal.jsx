@@ -3,6 +3,7 @@ import { updatePassword, checkPassword } from '../utils/auth'
 
 export default function SettingsModal({ settings, onSave, onReset, onClose }) {
   const [title, setTitle] = useState(settings.title || 'Mon Emploi du Temps')
+  const [subtitle, setSubtitle] = useState(settings.subtitle || '')
   const [startTime, setStartTime] = useState(settings.startTime)
   const [endTime, setEndTime] = useState(settings.endTime)
   const [currentPwd, setCurrentPwd] = useState('')
@@ -18,7 +19,7 @@ export default function SettingsModal({ settings, onSave, onReset, onClose }) {
       return
     }
     setTimeError('')
-    onSave({ title, startTime, endTime })
+    onSave({ title, subtitle, startTime, endTime })
     onClose()
   }
 
@@ -61,13 +62,23 @@ export default function SettingsModal({ settings, onSave, onReset, onClose }) {
             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Général</h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Titre de l'emploi du temps</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Titre</label>
                 <input
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400 text-gray-800"
                   placeholder="Mon Emploi du Temps"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sous-titre <span className="font-normal text-gray-400">(optionnel)</span></label>
+                <input
+                  type="text"
+                  value={subtitle}
+                  onChange={e => setSubtitle(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400 text-gray-800"
+                  placeholder="ex. Classe de CE2 · 2024–2025"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">

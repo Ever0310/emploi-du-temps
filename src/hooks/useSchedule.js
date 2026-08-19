@@ -6,6 +6,7 @@ const DEFAULT_SETTINGS = {
   startTime: '08:00',
   endTime: '17:30',
   title: 'Mon Emploi du Temps',
+  subtitle: '',
 }
 
 const DEFAULT_EVENTS = [
@@ -48,7 +49,13 @@ export function useSchedule() {
   const [data, setData] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
-      try { return JSON.parse(saved) } catch { /* fall through */ }
+      try {
+        const parsed = JSON.parse(saved)
+        return {
+          settings: { ...DEFAULT_SETTINGS, ...parsed.settings },
+          events: parsed.events || DEFAULT_EVENTS,
+        }
+      } catch { /* fall through */ }
     }
     return { settings: DEFAULT_SETTINGS, events: DEFAULT_EVENTS }
   })

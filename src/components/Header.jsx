@@ -1,11 +1,19 @@
-export default function Header({ title, onSettings, onLogout, onAdd }) {
+export default function Header({ title, subtitle, onSettings, onLogout, onAdd, onExportPDF }) {
   return (
     <header className="bg-white shadow-sm px-4 py-3 flex items-center justify-between no-print sticky top-0 z-30">
-      <div className="flex items-center gap-2">
-        <span className="text-2xl">📅</span>
-        <h1 className="text-lg font-bold text-gray-800">{title || 'Mon Emploi du Temps'}</h1>
+      <div className="flex items-center gap-2.5 min-w-0">
+        <span className="text-2xl flex-shrink-0">📅</span>
+        <div className="min-w-0">
+          <h1 className="text-lg font-bold text-gray-800 leading-tight truncate">
+            {title || 'Mon Emploi du Temps'}
+          </h1>
+          {subtitle && (
+            <p className="text-xs text-gray-500 leading-tight truncate">{subtitle}</p>
+          )}
+        </div>
       </div>
-      <div className="flex items-center gap-2">
+
+      <div className="flex items-center gap-1.5 flex-shrink-0 ml-4">
         <button
           onClick={onAdd}
           className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
@@ -15,16 +23,18 @@ export default function Header({ title, onSettings, onLogout, onAdd }) {
           </svg>
           Ajouter
         </button>
+
         <button
-          onClick={() => window.print()}
+          onClick={onExportPDF}
           className="flex items-center gap-1.5 text-gray-600 hover:text-gray-800 hover:bg-gray-100 text-sm px-3 py-1.5 rounded-lg transition-colors"
-          title="Imprimer"
+          title="Exporter en PDF"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          Imprimer
+          PDF
         </button>
+
         <button
           onClick={onSettings}
           className="flex items-center gap-1.5 text-gray-600 hover:text-gray-800 hover:bg-gray-100 text-sm px-3 py-1.5 rounded-lg transition-colors"
@@ -36,6 +46,7 @@ export default function Header({ title, onSettings, onLogout, onAdd }) {
           </svg>
           Réglages
         </button>
+
         <button
           onClick={onLogout}
           className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-1.5 rounded-lg transition-colors"

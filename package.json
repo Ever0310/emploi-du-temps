@@ -2,18 +2,24 @@
   "name": "emploi-du-temps",
   "version": "1.0.0",
   "type": "module",
+  "homepage": "https://Ever0310.github.io/emploi-du-temps/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "VITE_BASE_PATH=/emploi-du-temps/ vite build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "vite": "^5.4.10"

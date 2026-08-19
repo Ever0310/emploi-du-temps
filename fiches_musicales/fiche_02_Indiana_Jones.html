@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Indiana Jones — Raiders March</title>
+<style>
+  @page {
+    size: A4;
+    margin: 1.2cm 1.5cm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #2c3e50;
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1E3A5F 0%, #2874A6 100%);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-note {
+    font-size: 36px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .header-sub {
+    font-size: 10px;
+    color: #AED6F1;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .header-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .header-composer {
+    font-size: 13px;
+    color: #D6EAF8;
+  }
+
+  /* LIGNE DU MILIEU */
+  .mid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  /* QR BOX */
+  .qr-box {
+    background: #EBF5FB;
+    border: 2px solid #5DADE2;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 12px 14px;
+    gap: 10px;
+  }
+  .qr-box img {
+    width: 155px;
+    height: 155px;
+    display: block;
+    border: 3px solid #2E86C1;
+    border-radius: 6px;
+  }
+  .qr-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1A5276;
+    text-align: center;
+  }
+
+  /* SMILEY BOX */
+  .smiley-box {
+    background: #FEF9E7;
+    border: 2px solid #F4D03F;
+    border-radius: 12px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .smiley-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #D35400;
+  }
+  .smileys {
+    display: flex;
+    gap: 22px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .smiley-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .smiley-circle {
+    width: 64px;
+    height: 64px;
+    border: 2.5px dashed #C8C8C8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    line-height: 1;
+    background: white;
+  }
+  .smiley-label {
+    font-size: 9.5px;
+    color: #7F8C8D;
+    text-align: center;
+    width: 68px;
+    line-height: 1.3;
+  }
+  .smiley-instruction {
+    font-size: 10px;
+    color: #95A5A6;
+    font-style: italic;
+  }
+
+  /* INFO BOXES */
+  .info-box {
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .info-box:last-child { margin-bottom: 0; }
+  .info-box-header {
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+  .info-box-content {
+    padding: 13px 16px;
+    font-size: 11.5px;
+    line-height: 1.7;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    border-radius: 0 0 12px 12px;
+  }
+
+  /* COMPOSITEUR — orange */
+  .composer-box .info-box-header {
+    background: linear-gradient(90deg, #CA6F1E, #E67E22);
+  }
+  .composer-box .info-box-content {
+    background: #FEF5E4;
+    border-color: #E67E22;
+  }
+
+  /* FILM — vert */
+  .film-box .info-box-header {
+    background: linear-gradient(90deg, #1E8449, #27AE60);
+  }
+  .film-box .info-box-content {
+    background: #EAFAF1;
+    border-color: #27AE60;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 8px;
+    color: #BDC3C7;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-note">&#9835;</div>
+    <div>
+      <div class="header-sub">Écoutes musicales &mdash; musiques de films</div>
+      <div class="header-title">Indiana Jones &mdash; <em>Raiders March</em></div>
+      <div class="header-composer">John Williams</div>
+    </div>
+  </div>
+
+  <div class="mid-row">
+
+    <div class="qr-box">
+      <img src="data:image/png;base64,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" alt="QR Code écoute">
+      <div class="qr-label">&#128241; Scanne pour écouter !</div>
+    </div>
+
+    <div class="smiley-box">
+      <div class="smiley-title">J&apos;ai aimé&nbsp;?</div>
+      <div class="smileys">
+        <div class="smiley-item">
+          <div class="smiley-circle">&#128522;</div>
+          <div class="smiley-label">J&apos;ai adoré&nbsp;!</div>
+        </div>
+        <div class="smiley-item">
+          <div class="smiley-circle">&#128528;</div>
+          <div class="smiley-label">Pas mal&hellip;</div>
+        </div>
+        <div class="smiley-item">
+          <div class="smiley-circle">&#128533;</div>
+          <div class="smiley-label">Pas aimé</div>
+        </div>
+      </div>
+      <div class="smiley-instruction">&#8594; Entoure le bon smiley</div>
+    </div>
+
+  </div>
+
+  <div class="info-box composer-box">
+    <div class="info-box-header">&#127932; Le compositeur : John Williams</div>
+    <div class="info-box-content">John Williams est né en 1932 à New York. C'est l'un des compositeurs les plus talentueux d'Hollywood ! En plus d'Indiana Jones, il a composé Star Wars, Harry Potter, Jurassic Park, E.T. et bien d'autres encore. Il a reçu 5 Oscars dans sa carrière.</div>
+  </div>
+
+  <div class="info-box film-box">
+    <div class="info-box-header">&#127916; Le film : Indiana Jones</div>
+    <div class="info-box-content">Les Aventuriers de l'Arche Perdue (1981) est le premier film de la saga Indiana Jones, réalisé par Steven Spielberg. Le héros, Indiana Jones (joué par Harrison Ford), est un archéologue aventurier. Il part à la recherche de l'Arche d'Alliance, un objet mystérieux et très puissant. C'est une aventure pleine d'action ! Il y a 5 films dans la saga.</div>
+  </div>
+
+  <div class="footer">Écoutes musicales : musiques de films &mdash; Fiche 2</div>
+
+</body>
+</html>
